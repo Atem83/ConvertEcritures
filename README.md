@@ -12,7 +12,7 @@
 </div>
 
 <div align="center">
-  <div style="display: flex; justify-content: space-around; gap: 20px;">
+  <div style="display: flex; justify-content: space-around; gap: 100px;">
     <img src="https://raw.githubusercontent.com/Atem83/ConvertEcritures/main/images/GUI.png" alt="GUI" style="width: 35%;">
     <img src="https://raw.githubusercontent.com/Atem83/ConvertEcritures/main/images/GUI Settings.png" alt="GUI Settings" style="width: 35%;">
   </div>
@@ -67,7 +67,7 @@ pip install ConvertEcritures
 
 <h2 align="center"> Depuis le logiciel </h2>
 
-Download the .exe software from [here](https://github.com/Atem83/ConvertEcritures/releases/latest) and launch it.
+Vous pouvez télécharger le logiciel [ici](https://github.com/Atem83/ConvertEcritures/releases/latest) et le lancer.
 
 <h2 align="center"> Depuis une CLI </h2>
 

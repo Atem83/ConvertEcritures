@@ -1,0 +1,22 @@
+# Byte-compiled / optimized / DLL files
+*.pyc
+__pycache__/
+
+# Distribution / packaging
+dist/
+ConvertEcritures.egg-info/
+publish.py
+
+# Configuration de pyinstaller
+config pyinstaller.json
+
+# Dossier des paramètres
+py_convert/format_settings/*
+!py_convert/format_settings/__init__.py
+!py_convert/format_settings/base_settings.py
+!py_convert/format_settings/cash_settings.py
+
+# Others
+Start.py
+test.py
+.venv

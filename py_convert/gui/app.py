@@ -3,6 +3,7 @@ from PySide6 import QtWidgets, QtGui
 from py_convert.settingsManager import Settings
 from .main import MyFrame
 from .menu import MenuBar
+from ..__about__ import __title__
 
 class App(QtWidgets.QMainWindow):
     """Application graphique"""
@@ -25,7 +26,7 @@ class App(QtWidgets.QMainWindow):
             self.settings.window_size[2],
             self.settings.window_size[3]
         )
-        self.setWindowTitle("Convertisseur")
+        self.setWindowTitle(__title__)
         
         # Création de la fenêtre principale
         self.main_frame = MyFrame(self)

@@ -14,35 +14,37 @@
 <div align="center">
   <div style="display: flex; justify-content: space-around;">
     <img src="https://raw.githubusercontent.com/Atem83/ConvertEcritures/main/images/GUI.png" alt="GUI" style="width: 35%;">
+    <img src="https://raw.githubusercontent.com/Atem83/ConvertEcritures/main/images/GUI Settings.png" alt="GUI Settings" style="width: 35%;">
   </div>
 </div>
 
-<br>
+<h2 align="center"> Formats d'import </h2>
 
-<div align="center">
-  <img src="https://raw.githubusercontent.com/Atem83/ConvertEcritures/main/images/GUI Settings.png" alt="GUI Settings" style="width: 35%;">
-</div>
+**FEC** : format .txt et les deux séparateurs sont reconnus
 
-<h2 align="center"> Fonctionnalités </h2>
+**QUADRA** : format ASCII sans extension
 
-Ce programme permet de transformer un format de fichier d'écritures comptables en un autre format.
+**SAGE 20** : format .txt
 
-Formats d'import actuellement disponibles :
-- **FEC** : format .txt et les deux séparateurs sont reconnus
-- **QUADRA** : format ASCII sans extension
-- **SAGE 20** : format .txt
-- **PRESSE-PAPIER** : pas de fichier d'import, récupère le contenu du presse-papier qui doit au format du logiciel comptable ComptabiliteExpert (éditeur ACD)
-- **SEKUR** : journal des ventes au format .xlsx du logiciel de vente SEKUR
+**PRESSE-PAPIER** : pas de fichier d'import, récupère le contenu du presse-papier qui doit au format du logiciel comptable ComptabiliteExpert (éditeur ACD)
 
-Formats d'export actuellement disponibles :
-- **FEC** : format .txt avec séparateur tabulation
-- **EXCEL** : format .xlsx
-- **PRESSE-PAPIER** : pas de fichier d'export, exporte les écritures dans le presse-papier au format reconnu par le logiciel comptable ComptabiliteExpert (éditeur ACD)
-- **TRS** : format .TRS
+**SEKUR** : journal des ventes au format .xlsx du logiciel de vente SEKUR
 
-Paramètres actuellement disponibles :
-- **Paramètre "CAISSE" pour le format d'import "PRESSE-PAPIER"** : permet de convertir le grand livre d'un compte 580 dans le presse-papier en écritures comptables équilibrées avec la contrepartie en caisse pour solder le compte 580 opération par opération facilement et rapidement.
-- Aucun autre paramètre n'est pour le moment publiquement disponible mais il est possible d'en ajouter.
+<h2 align="center"> Formats d'export </h2>
+
+**FEC** : format .txt avec séparateur tabulation
+
+**EXCEL** : format .xlsx
+
+**PRESSE-PAPIER** : pas de fichier d'export, exporte les écritures dans le presse-papier au format reconnu par le logiciel comptable ComptabiliteExpert (éditeur ACD)
+
+**TRS** : format .TRS
+
+<h2 align="center"> Paramètres </h2>
+
+**Paramètre "CAISSE" pour le format d'import "PRESSE-PAPIER"** : permet de convertir le grand livre d'un compte 580 dans le presse-papier en écritures comptables équilibrées avec la contrepartie en caisse pour solder le compte 580 opération par opération facilement et rapidement.
+
+Aucun autre paramètre n'est pour le moment publiquement disponible mais il est possible d'en ajouter.
 
 Les paramètres permettent de personnaliser et de modifier les écritures comptables importer avant leur export sous le nouveau format.
 Par exemple, un fichier d'écriture utilisant des comptes lambda peut alors être converti pour remplacer les comptes lambda par le plan comptable d'un dossier en particulier.

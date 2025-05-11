@@ -1,0 +1,4 @@
+polars
+PySide6
+screeninfo
+send2trash

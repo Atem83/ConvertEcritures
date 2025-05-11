@@ -19,4 +19,4 @@ py_convert/format_settings/*
 # Others
 Start.py
 test.py
-.venv
+venv

@@ -1,4 +1,6 @@
 polars
 PySide6
+dateparser
+openpyxl
 screeninfo
 send2trash

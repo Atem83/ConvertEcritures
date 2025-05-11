@@ -223,7 +223,7 @@ class MyFrame(QtWidgets.QFrame):
             # Effectue des modifications aux écritures selon certains paramètres
             for cls in settings_classes:
                 if methode_param == cls().name():
-                    settings = cls(self, df)
+                    settings = cls(self, df, self.app.settings.directory)
                     settings.modify_data()
                     df = settings.entries
                     break

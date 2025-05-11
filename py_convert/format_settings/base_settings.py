@@ -1,16 +1,19 @@
 import polars as pl
 from abc import ABC, abstractmethod
 from PySide6 import QtWidgets
+from pathlib import Path
 from ..error import run_error
 
 class BaseSettings(ABC):
     """Classe abstraite pour les méthodes de paramétrage d'écritures."""
     def __init__(self, 
                  myframe: QtWidgets.QFrame | None = None, 
-                 df: pl.DataFrame | None = None
+                 df: pl.DataFrame | None = None,
+                 dir: Path = Path.home() / "Desktop"
                  ):
         self._entries = df
         self.myframe = myframe
+        self._dir = dir
     
     @abstractmethod
     def name(self) -> str:

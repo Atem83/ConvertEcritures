@@ -37,7 +37,7 @@ class BaseSettings(ABC):
         try:
             self._entries = self.process_file()
         except Exception as e:
-            run_error("Une erreur est survenue.", details=str(e))
+            run_error("Une erreur est survenue lors du paramétrage.", details=str(e))
             print(e)
             return
     

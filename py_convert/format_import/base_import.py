@@ -59,7 +59,7 @@ class BaseImport(ABC):
             if self._entries is None:
                 self.import_failed = True
         except Exception as e:
-            run_error("Une erreur est survenue.", details=str(e))
+            run_error("Une erreur est survenue lors de l'import.", details=str(e))
             print(e)
             self.import_failed = True
             return

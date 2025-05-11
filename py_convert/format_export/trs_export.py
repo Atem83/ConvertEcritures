@@ -80,28 +80,38 @@ class TRSExport(BaseExport):
                 export += value + space
 
                 # Écrire le sens du montant
-                if entry["Debit"] > 0:
+                if entry["Debit"] > 0 or entry["Credit"] < 0:
                     value = "D"
-                elif entry["Credit"] > 0:
+                elif entry["Credit"] > 0 or entry["Debit"] < 0:
                     value = "C"
                 else:
                     value = ""
-                    run_error("Un montant débit ou crédit est manquant")
                 value += space * (limit_sens - len(value))
                 export += value + space    
 
                 # Écrire le montant
                 if entry["Debit"] > 0:
                     value = round(entry["Debit"], 2)
+                    value = "{:.2f}".format(value)
                     value = str(value)
                     value = value.replace(".", "")
                 elif entry["Credit"] > 0:
                     value = round(entry["Credit"], 2)
+                    value = "{:.2f}".format(value)
+                    value = str(value)
+                    value = value.replace(".", "")
+                elif entry["Debit"] < 0:
+                    value = round(-entry["Debit"], 2)
+                    value = "{:.2f}".format(value)
+                    value = str(value)
+                    value = value.replace(".", "")
+                elif entry["Credit"] < 0:
+                    value = round(-entry["Credit"], 2)
+                    value = "{:.2f}".format(value)
                     value = str(value)
                     value = value.replace(".", "")
                 else:
-                    value = 0.0
-                    run_error("Un montant débit ou crédit est manquant")
+                    value = "000"
                 value = f"{value: >14}"
                 value += space * (limit_amount - len(value))
                 export += value + space

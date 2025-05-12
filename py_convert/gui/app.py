@@ -51,7 +51,7 @@ class App(QtWidgets.QMainWindow):
         """Enregistre des actions quand la fenêtre principale est déplacée."""
         self.settings.window_size = (
             self.x(),
-            self.y(),
+            self.y() + 31,
             self.width(), 
             self.height()
             )

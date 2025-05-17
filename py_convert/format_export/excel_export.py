@@ -46,5 +46,6 @@ class ExcelExport(BaseExport):
             column_formats=dict_col,
             float_precision=2,
             include_header=True,
-            autofit=True
+            autofit=True,
+            freeze_panes=(1, 0)
         )

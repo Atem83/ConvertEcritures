@@ -22,14 +22,17 @@ class ImportLabo(ImportBase):
             return False
     
     def process_file(self):
+        titles = self.get_titles()
         df = pl.read_excel(
             source=self.path, 
             engine="calamine", 
             read_options={
-                "column_names": self.get_titles(), 
+                "column_names": list(titles), 
                 "skip_rows": 3
-                }
+                },
+            schema_overrides=titles
             )
+        
         date = self.get_date(df, "Date de vente")
 
         # Conserve uniquement les colonnes pertinentes
@@ -70,9 +73,9 @@ class ImportLabo(ImportBase):
             # Ajout des comptes de produits et de TVA
             for key, value in country.items():
                 percent = self.get_vat(key)
-                if percent is None or value == 0:
+                if percent == "" or value == 0.0:
                     continue
-                
+                value = float(value)
                 label = name + " " + percent + " " + date.strftime("%m/%Y")
 
                 if key.startswith("H.T."):
@@ -82,7 +85,7 @@ class ImportLabo(ImportBase):
                 else:
                     account = None
 
-                if value > 0:
+                if value > 0.0:
                     debit = 0.0
                     credit = value
                 else:
@@ -117,44 +120,35 @@ class ImportLabo(ImportBase):
     
     def get_titles(self):
         """Récupère les en-têtes des colonnes"""
-        wb = load_workbook(filename=self.path)
-        ws = wb.worksheets[0]
-        end_col = ws.max_column
-        titles = []
-        
-        for col in range(1, end_col):
-            cell1 = str(ws.cell(1, col).value or '')
-            cell3 = str(ws.cell(3, col).value or '')
+        df = pl.read_excel(source=self.path, has_header=False)
+        columns = [df[col][:3].to_list() for col in df.columns]
+        titles = {}
+
+        for col in columns:
+            cell1 = str(col[0] or "").strip()
+            cell3 = str(col[2] or "").strip()
             if cell3.strip() != "TVA":
-                cell2 = self.get_vat(str(ws.cell(2, col).value or ''))
-
-            if cell1 is None :
-                cell1 = ""
-            else:
-                cell1 = cell1.strip()
-
-            if cell2 is None :
-                cell2 = ""
-            else:
-                cell2 = cell2.strip()
-
-            if cell3 is None :
-                cell3 = ""
-            else:
-                cell3 = cell3.strip()
-
+                cell2 = self.get_vat(str(col[1] or ""))
             name = f"{cell3} {cell2} {cell1}".strip()
-            titles.append(name)
-        
+            
+            # Choix du dtype pour chaque colonne
+            if name.startswith("Date"):
+                dtype = pl.Date
+            elif name.startswith(("Montant", "T.T.C.", "H.T.", "TVA", "Total")):
+                dtype = pl.Float64
+            else:
+                dtype = pl.String
+            titles[name] = dtype
+
         return titles
     
-    def get_vat(self,text: str):
+    def get_vat(self, text: str):
         """Récupère le % de TVA d'un champ texte"""
         text = text.replace(',', '.')
         match = re.search(r'(\d+\.?\d*)\s*%', str(text))
         if match:
-            return match.group(1) + "%"
-        return None
+            return str(match.group(1) + "%")
+        return ""
 
     def get_date(self, df: pl.DataFrame, col_name: str) -> pl.Date:
         """Récupère le mois et l'année le plus rencontré d'un DataFrame"""

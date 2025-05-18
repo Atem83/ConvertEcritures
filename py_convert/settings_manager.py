@@ -1,6 +1,8 @@
 import json
 from pathlib import Path
+
 from screeninfo import get_monitors
+
 from py_convert.format_import import import_names, import_classes
 from py_convert.format_export import export_names
 from py_convert.format_settings import get_allowed_settings

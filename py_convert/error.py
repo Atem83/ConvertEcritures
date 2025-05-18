@@ -1,7 +1,9 @@
 import sys
-from PySide6.QtWidgets import (QApplication, QDialog, QLabel, QPushButton,
-                               QVBoxLayout, QHBoxLayout, QSizePolicy, QWidget,
-                               QMessageBox)
+
+from PySide6.QtWidgets import (
+    QApplication, QDialog, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, 
+    QSizePolicy, QWidget, QMessageBox
+    )
 from PySide6.QtCore import Qt
 
 class ErrorWindow(QDialog):

@@ -2,6 +2,8 @@ import pkgutil
 import importlib
 from abc import ABC
 
+from .base import ExportBase
+
 def _get_classes() -> list[type]:
     """Récupère dynamiquement toutes les classes du dossier."""
     classes = []

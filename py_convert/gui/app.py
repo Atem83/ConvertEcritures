@@ -1,9 +1,11 @@
 import sys
+
 from PySide6 import QtWidgets, QtGui
-from py_convert.settingsManager import Settings
-from .main import MyFrame
-from .menu import MenuBar
-from ..__about__ import __title__
+
+from py_convert.settings_manager import Settings
+from py_convert.__about__ import __title__
+from py_convert.gui.main import MyFrame
+from py_convert.gui.menu import MenuBar
 
 class App(QtWidgets.QMainWindow):
     """Application graphique"""

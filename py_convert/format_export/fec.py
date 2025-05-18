@@ -1,7 +1,8 @@
 import polars as pl
-from .base_export import BaseExport
 
-class FECExport(BaseExport):
+from py_convert.format_export import ExportBase
+
+class ExportFEC(ExportBase):
     """Gestion d'export au format FEC."""
     def name(self):
         return "FEC"

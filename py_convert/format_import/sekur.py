@@ -1,10 +1,11 @@
 import polars as pl
 import dateparser
 from openpyxl import load_workbook
-from .base_import import BaseImport
-from ..error import run_error
 
-class SekurImport(BaseImport):
+from py_convert.error import run_error
+from py_convert.format_import import ImportBase
+
+class ImportSekur(ImportBase):
     """Gestion d'import d'un fichier Excel au format SEKUR."""
     
     def name(self):

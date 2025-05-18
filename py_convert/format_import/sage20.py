@@ -1,8 +1,9 @@
 import polars as pl
-from .base_import import BaseImport
-from ..error import run_error
 
-class Sage20Import(BaseImport):
+from py_convert.error import run_error
+from py_convert.format_import import ImportBase
+
+class ImportSage20(ImportBase):
     """Gestion d'import de frulog au format Sage"""
     
     def name(self):
@@ -84,56 +85,59 @@ class Sage20Import(BaseImport):
                     ecriture = []
 
         entetes = {
-            "JournalCode": pl.Utf8,
-            "EcritureDate": pl.Utf8,
-            "PieceRef": pl.Utf8,
-            "CompteNum": pl.Utf8,
-            "CompAuxNum": pl.Utf8,
-            "EcritureLib": pl.Utf8,
-            "EcheanceDate": pl.Utf8,
+            "JournalCode": pl.String,
+            "EcritureDate": pl.String,
+            "PieceRef": pl.String,
+            "CompteNum": pl.String,
+            "CompAuxNum": pl.String,
+            "EcritureLib": pl.String,
+            "EcheanceDate": pl.String,
             "Debit": pl.Float64,
             "Credit": pl.Float64,
-            "PieceDate": pl.Utf8,
-            "JournalLib": pl.Utf8,
-            "EcritureNum": pl.Utf8,
-            "CompteLib": pl.Utf8,
-            "CompAuxLib": pl.Utf8,
-            "EcritureLet": pl.Utf8,
-            "DateLet": pl.Utf8,
-            "ValidDate": pl.Utf8,
+            "PieceDate": pl.String,
+            "JournalLib": pl.String,
+            "EcritureNum": pl.String,
+            "CompteLib": pl.String,
+            "CompAuxLib": pl.String,
+            "EcritureLet": pl.String,
+            "DateLet": pl.String,
+            "ValidDate": pl.String,
             "Montantdevise": pl.Float64,
-            "Idevise": pl.Utf8,
+            "Idevise": pl.String,
         }
         df = pl.DataFrame(liste_ecritures, schema=entetes, orient="row")
         
         # Je réorganise l'ordre des colonnes de mon dataframe
-        df = df.select("JournalCode",
-                        "JournalLib",
-                        "EcritureNum",
-                        "EcritureDate",
-                        "CompteNum",
-                        "CompteLib",
-                        "CompAuxNum",
-                        "CompAuxLib",
-                        "PieceRef",
-                        "PieceDate",
-                        "EcritureLib",
-                        "Debit",
-                        "Credit",
-                        "EcritureLet",
-                        "DateLet",
-                        "ValidDate",
-                        "Montantdevise",
-                        "Idevise",
-                        "EcheanceDate"
-                        )
+        df = df.select(
+            "JournalCode",
+            "JournalLib",
+            "EcritureNum",
+            "EcritureDate",
+            "CompteNum",
+            "CompteLib",
+            "CompAuxNum",
+            "CompAuxLib",
+            "PieceRef",
+            "PieceDate",
+            "EcritureLib",
+            "Debit",
+            "Credit",
+            "EcritureLet",
+            "DateLet",
+            "ValidDate",
+            "Montantdevise",
+            "Idevise",
+            "EcheanceDate"
+            )
 
         # Je transforme le type des colonnes de date et de montant
-        df = df.with_columns(pl.col("EcritureDate", 
-                                "PieceDate",
-                                "DateLet",
-                                "ValidDate",
-                                "EcheanceDate")
-                             .str.strptime(pl.Date, "%d%m%y"))
+        df = df.with_columns(
+            pl.col("EcritureDate",
+                   "PieceDate",
+                   "DateLet",
+                   "ValidDate",
+                   "EcheanceDate")
+            .str.strptime(pl.Date, "%d%m%y")
+            )
 
         return df

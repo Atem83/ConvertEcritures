@@ -1,7 +1,8 @@
 import polars as pl
-from .base_settings import BaseSettings
 
-class CASH(BaseSettings):
+from py_convert.format_settings import SettingsBase
+
+class SettingsCash(SettingsBase):
     """Gestion des paramètres de l'import du Grand Livre d'un compte 580."""
     def name(self):
         return "CAISSE"

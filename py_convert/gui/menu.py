@@ -1,6 +1,7 @@
 from PySide6 import QtWidgets
-from .about import AboutWindow
-from .settings import SettingsWindow
+
+from py_convert.gui.about import AboutWindow
+from py_convert.gui.settings import SettingsWindow
 
 class MenuBar(QtWidgets.QMenuBar):
     """Barre des menus"""

@@ -1,10 +1,12 @@
-import polars as pl
 from abc import ABC, abstractmethod
-from PySide6 import QtWidgets
 from pathlib import Path
-from ..error import run_error
 
-class BaseSettings(ABC):
+import polars as pl
+from PySide6 import QtWidgets
+
+from py_convert.error import run_error
+
+class SettingsBase(ABC):
     """Classe abstraite pour les méthodes de paramétrage d'écritures."""
     def __init__(self, 
                  myframe: QtWidgets.QFrame | None = None, 

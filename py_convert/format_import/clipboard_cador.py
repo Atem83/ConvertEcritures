@@ -1,7 +1,8 @@
 import polars as pl
-from .base_import import BaseImport
 
-class ClipboardCadorImport(BaseImport):
+from py_convert.format_import import ImportBase
+
+class ImportCBCador(ImportBase):
     """Gestion d'import d'écritures du presse-papier au format CADOR."""
     
     def name(self):
@@ -10,7 +11,8 @@ class ClipboardCadorImport(BaseImport):
     def validate_format(self):
         return True
     
-    def file_delation(self) -> bool:
+    @property
+    def file_deletion(self) -> bool:
         return False
     
     def process_file(self):

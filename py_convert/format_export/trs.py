@@ -1,8 +1,8 @@
 import polars as pl
-from .base_export import BaseExport
-from ..error import run_error
 
-class TRSExport(BaseExport):
+from py_convert.format_export import ExportBase
+
+class ExportTRS(ExportBase):
     """Gestion d'export au format TRS."""
     def name(self):
         return "TRS"

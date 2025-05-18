@@ -1,8 +1,9 @@
 import polars as pl
-from .base_import import BaseImport
-from ..error import run_error
 
-class QuadraImport(BaseImport):
+from py_convert.format_import import ImportBase
+from py_convert.error import run_error
+
+class ImportQuadra(ImportBase):
     """Gestion d'import au format ASCII de Quadra."""
     
     def name(self):

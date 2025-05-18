@@ -1,9 +1,10 @@
 import polars as pl
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QMessageBox
-from .base_export import BaseExport
 
-class ClipboardCadorExport(BaseExport):
+from py_convert.format_export import ExportBase
+
+class ExportCBCador(ExportBase):
     """Gestion d'export au format presse-papier de CADOR."""
     def name(self):
         return "PRESSE-PAPIER"

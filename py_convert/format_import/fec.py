@@ -1,8 +1,9 @@
 import polars as pl
-from .base_import import BaseImport
-from ..error import run_error
 
-class FECImport(BaseImport):
+from py_convert.error import run_error
+from py_convert.format_import import ImportBase
+
+class ImportFEC(ImportBase):
     """Gestion d'import au format FEC"""
     
     def name(self):

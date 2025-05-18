@@ -2,6 +2,8 @@ import pkgutil
 import importlib
 from abc import ABC
 
+from .base import SettingsBase
+
 def get_allowed_settings() -> dict[str, list[str]]:
     """Liste des paramètres autorisés pour tous les imports."""
     settings_list = {}

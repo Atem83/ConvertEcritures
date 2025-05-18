@@ -1,4 +1,4 @@
-from .gui.app import App
+from py_convert.gui.app import App
 
 def main():
     app = App()

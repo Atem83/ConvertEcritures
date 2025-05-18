@@ -1,9 +1,11 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
-import polars as pl
-from ..error import run_error
 
-class BaseImport(ABC):
+import polars as pl
+
+from py_convert.error import run_error
+
+class ImportBase(ABC):
     """Classe abstraite pour les méthodes d'importation d'écritures."""
     def __init__(self, filename: str | None = None):
         self.import_failed = False
@@ -24,7 +26,7 @@ class BaseImport(ABC):
         pass
     
     @abstractmethod
-    def process_file(self):
+    def process_file(self) -> pl.DataFrame:
         """Traite le fichier et retourne un dataframe d'écritures comptables."""
         pass
     
@@ -39,14 +41,58 @@ class BaseImport(ABC):
         pl.Config(decimal_separator=",", float_precision=2)
         
         # Permet d'éviter un nombre anormal de chiffres après la virgule
-        df = df.with_columns([pl.col(pl.Float64).round(2),
-                            pl.col(pl.Float32).round(2)])
+        df = df.with_columns([
+            pl.col(pl.Float64).round(2), 
+            pl.col(pl.Float32).round(2)
+            ])
         
         return df
     
-    def file_delation(self) -> bool:
+    @property
+    def file_deletion(self) -> bool:
         """Le fichier peut-il être supprimé ?"""
         return True
+    
+    @property
+    def get_columns(self):
+        """Retourne les colonnes et leur format nécessaire dans le dataframe."""
+        return {
+            "JournalCode": pl.String,
+            "JournalLib": pl.String,
+            "EcritureNum": pl.String,
+            "EcritureDate": pl.Date,
+            "CompteNum": pl.String,
+            "CompteLib": pl.String,
+            "CompAuxNum": pl.String,
+            "CompAuxLib": pl.String,
+            "PieceRef": pl.String,
+            "PieceDate": pl.Date,
+            "EcritureLib": pl.String,
+            "Debit": pl.Float64,
+            "Credit": pl.Float64,
+            "EcritureLet": pl.String,
+            "DateLet": pl.Date,
+            "ValidDate": pl.Date,
+            "Montantdevise": pl.Float64,
+            "Idevise": pl.String,
+            "EcheanceDate": pl.Date
+        }
+    
+    def check_columns(self, df: pl.DataFrame) -> pl.DataFrame:
+        """Vérifie et corrige les colonnes du dataframe."""
+        
+        for col, dtype in self.get_columns.items():
+            # Ajout des colonnes manquantes
+            if col not in df.columns:
+                df = df.with_columns(pl.lit(None, dtype=dtype).alias(col))
+            # Conversion des dtypes des colonnes existantes
+            else:
+                df = df.with_columns(pl.col(col).cast(dtype).alias(col))
+        
+        # Tri des colonnes
+        df = df.select(list(self.get_columns))
+        
+        return df
     
     def import_data(self):
         """Méthode principale d'import."""
@@ -58,6 +104,8 @@ class BaseImport(ABC):
             self._entries = self.process_file()
             if self._entries is None:
                 self.import_failed = True
+            else:
+                self._entries = self.check_columns(self._entries)
         except Exception as e:
             run_error("Une erreur est survenue lors de l'import.", details=str(e))
             print(e)

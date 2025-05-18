@@ -1,12 +1,14 @@
 import re
-import send2trash as s2t
-import polars as pl
 from pathlib import Path
+
+import polars as pl
+import send2trash as s2t
 from PySide6 import QtWidgets, QtGui, QtCore
-from .animated_toggle import QSwitch
-from ..format_import import import_classes, import_names
-from ..format_export import export_classes, export_names
-from ..format_settings import settings_classes, settings_names, get_allowed_settings
+
+from py_convert.format_import import import_classes, import_names
+from py_convert.format_export import export_classes, export_names
+from py_convert.format_settings import settings_classes, settings_names, get_allowed_settings
+from py_convert.gui.animated_toggle import QSwitch
 
 class MyFrame(QtWidgets.QFrame):
     """Fenêtre principale"""
@@ -144,8 +146,8 @@ class MyFrame(QtWidgets.QFrame):
         # Paramètre le bouton switch pour la suppression du fichier
         for cls in import_classes:
             if choice == cls().name():
-                self.switch.setEnabled(cls().file_delation())
-                if cls().file_delation() == False:
+                self.switch.setEnabled(cls().file_deletion)
+                if cls().file_deletion == False:
                     self.switch.setChecked(False)
                 break
 

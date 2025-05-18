@@ -1,7 +1,8 @@
 import polars as pl
-from .base_export import BaseExport
 
-class ExcelExport(BaseExport):
+from py_convert.format_export import ExportBase
+
+class ExportExcel(ExportBase):
     """Gestion d'export au format Excel."""
     def name(self):
         return "EXCEL"

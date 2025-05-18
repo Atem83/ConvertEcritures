@@ -1,5 +1,6 @@
 from PySide6 import QtWidgets, QtCore, QtGui
-from ..__about__ import __version__, __url__, __author__, __license__, __description__
+
+from py_convert.__about__ import __version__, __url__, __author__, __license__, __description__
 
 class AboutWindow(QtWidgets.QDialog):
     """Fenêtre À propos"""

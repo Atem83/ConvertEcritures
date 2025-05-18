@@ -13,8 +13,8 @@ config pyinstaller.json
 # Dossier des paramètres
 py_convert/format_settings/*
 !py_convert/format_settings/__init__.py
-!py_convert/format_settings/base_settings.py
-!py_convert/format_settings/cash_settings.py
+!py_convert/format_settings/base.py
+!py_convert/format_settings/cash.py
 
 # Others
 Start.py

@@ -106,31 +106,8 @@ class ImportSage20(ImportBase):
             "Idevise": pl.String,
         }
         df = pl.DataFrame(liste_ecritures, schema=entetes, orient="row")
-        
-        # Je réorganise l'ordre des colonnes de mon dataframe
-        df = df.select(
-            "JournalCode",
-            "JournalLib",
-            "EcritureNum",
-            "EcritureDate",
-            "CompteNum",
-            "CompteLib",
-            "CompAuxNum",
-            "CompAuxLib",
-            "PieceRef",
-            "PieceDate",
-            "EcritureLib",
-            "Debit",
-            "Credit",
-            "EcritureLet",
-            "DateLet",
-            "ValidDate",
-            "Montantdevise",
-            "Idevise",
-            "EcheanceDate"
-            )
 
-        # Je transforme le type des colonnes de date et de montant
+        # Je transforme le type des colonnes de date
         df = df.with_columns(
             pl.col("EcritureDate",
                    "PieceDate",

@@ -39,47 +39,13 @@ class ImportFEC(ImportBase):
             df = pl.read_csv(self.path, separator=sep, encoding='ISO-8859-1')
 
         # Renomme les colonnes si les majuscules et minuscules ne correspondent pas
-        list_col = [
-            "JournalCode",
-            "JournalLib",
-            "EcritureNum",
-            "EcritureDate",
-            "CompteNum",
-            "CompteLib",
-            "CompAuxNum",
-            "CompAuxLib",
-            "PieceRef",
-            "PieceDate",
-            "EcritureLib",
-            "Debit",
-            "Credit",
-            "EcritureLet",
-            "DateLet",
-            "ValidDate",
-            "Montantdevise",
-            "Idevise",
-            "EcheanceDate"
-        ]
-        lower_list_col = [name.lower() for name in list_col]
-        
-        date_col = [
-            "EcritureDate",
-            "PieceDate",
-            "DateLet",
-            "ValidDate",
-            "EcheanceDate"
-        ]
-        
-        currency_col = [
-            "Debit",
-            "Credit",
-            "Montantdevise"
-        ]
+        lower_list_col = [name.lower() for name in list(self.get_columns)]
 
         # Corrige la casse dans les noms de colonne
         for column in df.columns:
             if column.lower() in lower_list_col:
-                new_name = list_col[lower_list_col.index(column.lower())]
+                new_name = list(self.get_columns.keys())[
+                    lower_list_col.index(column.lower())]
                 df = df.rename({column: new_name})
 
         if "Sens" in df.columns and "Montant" in df.columns:
@@ -100,37 +66,19 @@ class ImportFEC(ImportBase):
             # Suppression des colonnes Montant et Sens
             df = df.drop(["Montant", "Sens"])
 
-        # Rajout de la colonne EcheanceDate
-        df = df.with_columns(pl.lit(None).alias("EcheanceDate").cast(pl.Date))
-
-        # Transforme les colonnes en type String
-        for column in list_col:
-            df = df.with_columns(pl.col(column).cast(pl.String))
-
         # Affecte None aux colonnes Date ne contenant que des espaces blancs
         # Permet d'éviter des erreurs dans des FEC avec des espaces dans la date
         # On pourrait le généraliser à toutes les colonnes String si nécessaire
-        for column in date_col:
+        for col in ["EcritureDate", "PieceDate", "DateLet", "ValidDate"]:
+            df = df.with_columns(pl.col(col).cast(pl.String))
             df = df.with_columns(
-                pl.when(pl.col(column).str.strip_chars() == "")
+                pl.when(pl.col(col).str.strip_chars() == "")
                 .then(None)
-                .otherwise(pl.col(column))
-                .alias(column)
+                .otherwise(pl.col(col))
+                .alias(col)
             )
             
             # Transforme les colonnes en type Date
-            df = df.with_columns(pl.col(column).str.to_date("%Y%m%d"))
-            
-        # Change les virgules en points pour les nombres
-        for column in currency_col:
-            df = df.with_columns(
-                pl.col(column)
-                  .cast(pl.String)
-                  .str.replace(",", ".")
-                  .cast(pl.Float64)
-                )
-        
-        # Réorganise l'ordre des colonnes
-        df = df.select(list_col)
+            df = df.with_columns(pl.col(col).str.to_date("%Y%m%d"))
 
         return df

@@ -87,7 +87,16 @@ class ImportBase(ABC):
                 df = df.with_columns(pl.lit(None, dtype=dtype).alias(col))
             # Conversion des dtypes des colonnes existantes
             else:
-                df = df.with_columns(pl.col(col).cast(dtype).alias(col))
+                if col in ["Debit", "Credit", "Montantdevise"]:
+                    df = df.with_columns(
+                        pl.col(col)
+                          .cast(pl.String)
+                          .str.replace(",", ".")
+                          .str.replace(" ", "", literal=True)
+                          .cast(pl.Float64)
+                        )
+                else:
+                    df = df.with_columns(pl.col(col).cast(dtype).alias(col))
         
         # Tri des colonnes
         df = df.select(list(self.get_columns))

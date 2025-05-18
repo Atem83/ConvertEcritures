@@ -80,53 +80,25 @@ class ImportQuadra(ImportBase):
 
                     ecriture = {
                         "JournalCode": ligne[9:11],
-                        "JournalLib": None,
-                        "EcritureNum": None,
                         "EcritureDate": ligne[14:20],
                         "CompteNum": compteGen,
-                        "CompteLib": None,
                         "CompAuxNum": compteAux,
-                        "CompAuxLib": None,
                         "PieceRef": numPiece,
                         "PieceDate": ligne[14:20],
                         "EcritureLib": ligne[116:148].rstrip(),
                         "Debit": debit,
                         "Credit": credit,
-                        "EcritureLet": None,
-                        "DateLet": None,
-                        "ValidDate": None,
-                        "Montantdevise": None,
-                        "Idevise": None,
-                        "EcheanceDate": None
                     }
 
                     # Création de la liste d'écritures
                     liste_ecritures.append(ecriture)
 
-        entetes = {
-            "JournalCode": pl.Utf8,
-            "JournalLib": pl.Utf8,
-            "EcritureNum": pl.Utf8,
-            "EcritureDate": pl.Utf8,
-            "CompteNum": pl.Utf8,
-            "CompteLib": pl.Utf8,
-            "CompAuxNum": pl.Utf8,
-            "CompAuxLib": pl.Utf8,
-            "PieceRef": pl.Utf8,
-            "PieceDate": pl.Utf8,
-            "EcritureLib": pl.Utf8,
-            "Debit": pl.Float64,
-            "Credit": pl.Float64,
-            "EcritureLet": pl.Utf8,
-            "DateLet": pl.Utf8,
-            "ValidDate": pl.Utf8,
-            "Montantdevise": pl.Utf8,
-            "Idevise": pl.Utf8,
-            "EcheanceDate": pl.Utf8
-        }
+        columns = self.get_columns
+        columns["EcritureDate"] = pl.String
+        columns["PieceDate"] = pl.String
 
         # Création du dataframe à partir de la liste
-        df = pl.DataFrame(liste_ecritures, schema=entetes, orient="row")
+        df = pl.DataFrame(liste_ecritures, schema=columns, orient="row")
 
         # Rajout du libellé de chaque compte
         for libelle in liste_libelles:
@@ -146,34 +118,8 @@ class ImportQuadra(ImportBase):
                   .alias("CompAuxLib")
             )
 
-        # Je réorganise l'ordre des colonnes de mon dataframe
-        df = df.select("JournalCode",
-                        "JournalLib",
-                        "EcritureNum",
-                        "EcritureDate",
-                        "CompteNum",
-                        "CompteLib",
-                        "CompAuxNum",
-                        "CompAuxLib",
-                        "PieceRef",
-                        "PieceDate",
-                        "EcritureLib",
-                        "Debit",
-                        "Credit",
-                        "EcritureLet",
-                        "DateLet",
-                        "ValidDate",
-                        "Montantdevise",
-                        "Idevise",
-                        "EcheanceDate"
-                        )
-
-        # Je transforme le type des colonnes de date et de montant
-        df = df.with_columns(pl.col("EcritureDate", 
-                                "PieceDate",
-                                "DateLet",
-                                "ValidDate",
-                                "EcheanceDate")
-                             .str.strptime(pl.Date, "%d%m%y"))
+        # Je transforme le type des colonnes de date
+        for col in ["EcritureDate", "PieceDate"]:
+            df = df.with_columns(pl.col(col).str.to_date("%d%m%y"))
 
         return df

@@ -30,6 +30,8 @@
 
 **SEKUR** : journal des ventes au format .xlsx du logiciel de vente SEKUR
 
+**VOSFACTURES** : fichier au format .xls du logiciel de vente vosfactures.fr
+
 <h2 align="center"> Formats d'export </h2>
 
 **FEC** : format .txt avec séparateur tabulation

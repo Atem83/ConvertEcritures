@@ -1,16 +1,15 @@
 import re
 
 import polars as pl
-from openpyxl import load_workbook
 
 from py_convert.error import run_error
 from py_convert.format_import import ImportBase
 
-class ImportLabo(ImportBase):
-    """Gestion d'import d'un fichier Excel au format LABO."""
+class ImportVosFactures(ImportBase):
+    """Gestion d'import d'un fichier Excel au format du logiciel vosfactures.fr."""
     
     def name(self):
-        return "LABO"
+        return "VOSFACTURES"
     
     def validate_format(self):
         if self.path.suffix.lower() == ".xls":

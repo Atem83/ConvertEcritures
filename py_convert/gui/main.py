@@ -46,7 +46,12 @@ class MyFrame(QtWidgets.QFrame):
         self.cb_import.addItems(import_names)
         self.cb_import.setCurrentText(self.app.settings.default_import)
         
-        txt = ("Extensions attendues :\nFEC :\t\t.txt\nSAGE 20 :\t.txt\nSEKUR :\t\t.xlsx")
+        txt = "Extensions attendues :"
+        txt += "\nFEC :\t\t.txt"
+        txt += "\nSAGE 20 :\t.txt"
+        txt += "\nSEKUR :\t\t.xlsx"
+        txt += "\nVOSFACTURES :\t.xls"
+        txt += "\nCOURTAGE :\t.csv"
         self.cb_import.setToolTip(txt)
         layout.addWidget(self.cb_import)
         return layout

@@ -37,10 +37,11 @@ class ImportCourtage(ImportBase):
         
         # Liste des banques reconnues
         client_list = [
+            {"entity": "BNP", "account": "CBNP", "label": "BNP", "product": "70650100"},
             {"entity": "BANQUE POSTALE", "account": "CBAN", "label": "BP", "product": "70651300"},
-            {"entity": "BNP PARIBAS", "account": "CBNP", "label": "BNP", "product": "70650100"},
             {"entity": "BANQUE POPULAIRE MEDITERRANEE", "account": "CBPC", "label": "BPMED", "product": "70651100"},
             {"entity": "CAISSE D'EPARGNE", "account": "CCAI", "label": "CE", "product": "70650700"},
+            {"entity": "SOCIETE GENERALE", "account": "CSG", "label": "SG", "product": "70652000"},
         ]
         
         df = df.with_columns(

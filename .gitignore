@@ -10,6 +10,9 @@ publish.py
 # Configuration de pyinstaller
 config pyinstaller.json
 
+# Dossier des imports
+py_convert/format_import/courtage.py
+
 # Dossier des paramètres
 py_convert/format_settings/*
 !py_convert/format_settings/__init__.py

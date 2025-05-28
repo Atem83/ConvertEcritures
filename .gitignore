@@ -20,3 +20,4 @@ py_convert/format_settings/*
 Start.py
 test.py
 venv
+*.code-workspace

@@ -11,8 +11,8 @@ class Settings():
     """Gestionnaire de paramètres pour sauvegarder des paramètres."""
     def __init__(self):
         self._directory = Path.home() / "Desktop"
-        self._default_import = import_names[0]
-        self._default_export = export_names[0]
+        self._default_import = import_names[0] if import_names else None
+        self._default_export = export_names[0] if export_names else None
         self._default_settings = {cls().name(): "" for cls in import_classes}
         self._delete_file = 0
         self._account_530 = "53000000"

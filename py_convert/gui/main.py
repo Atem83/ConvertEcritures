@@ -83,7 +83,7 @@ class MyFrame(QtWidgets.QFrame):
         self.cb_param.setFixedHeight(30)
         self.cb_param.addItems(settings_names)
         self.cb_param.setCurrentText(
-            self.app.settings.default_settings[self.cb_import.currentText()])
+            self.app.settings.default_settings.get(self.cb_import.currentText(), ""))
         self.cb_param.currentIndexChanged.connect(self.update_settings)
         layout.addWidget(self.cb_param)
         return layout

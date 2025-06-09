@@ -71,7 +71,7 @@ class SettingsBase(ABC):
         Args:
             col (str): Le nom de la colonne à modifier.
             new_str (str): La nouvelle chaine à insérer.
-            old_str (str): L'ancienne chaine à remplacer.
+            old_str (str): Le début de l'ancienne chaine à remplacer.
             filter (dict, optional): Un filtre pour la colonne.
         """
         

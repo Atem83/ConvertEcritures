@@ -16,7 +16,7 @@ class ImportFEC(ImportBase):
         return True
     
     def process_file(self):
-        with open(self.path, "r") as file:
+        with open(self.path, "r", encoding="utf-8", errors="replace") as file:
             lignes = file.readlines()
 
             # Reconnaissance auto du séparateur du fichier format FEC
@@ -36,7 +36,10 @@ class ImportFEC(ImportBase):
         try:
             df = pl.read_csv(self.path, separator=sep)
         except pl.exceptions.ComputeError:
-            df = pl.read_csv(self.path, separator=sep, encoding='ISO-8859-1')
+            try:
+                df = pl.read_csv(self.path, separator=sep, encoding='windows-1252')
+            except pl.exceptions.ComputeError:
+                df = pl.read_csv(self.path, separator=sep, encoding='ISO-8859-1')
 
         # Renomme les colonnes si les majuscules et minuscules ne correspondent pas
         lower_list_col = [name.lower() for name in list(self.get_columns)]

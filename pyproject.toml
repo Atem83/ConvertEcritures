@@ -2,15 +2,64 @@
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
+[project]
+name = "ConvertEcritures"
+version = "1.1.0"
+description = "Convertisseur d'écritures comptables d'un format à un autre format."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE.txt"]
+authors = [
+    {name = "Michaël AUGUSTE"}
+]
+classifiers = [
+    "Operating System :: OS Independent",
+    "Programming Language :: Python"
+]
+dependencies = [
+    "polars",
+    "PySide6",
+    "dateparser",
+    "openpyxl",
+    "xlsxwriter",
+    "fastexcel",
+    "screeninfo",
+    "send2trash"
+]
+
+[project.urls]
+Homepage = "https://github.com/Atem83/ConvertEcritures"
+Changelog = "https://github.com/Atem83/ConvertEcritures/blob/main/CHANGELOG.md"
+DOWNLOAD = "https://github.com/Atem83/ConvertEcritures/releases"
+
+[project.gui-scripts]
+ConvertEcritures-gui = "py_convert.cli:main"
+
+[tool.setuptools]
+packages = ["py_convert"]
+
+[tool.setuptools.package-dir]
+"" = "."
+
+[tool.cxfreeze]
+executables = [
+    {script = "start.py", base = "gui"}
+]
+
+[tool.cxfreeze.build_exe]
+includes = ["fastexcel"]
+packages = [
+    "py_convert.format_settings", 
+    "py_convert.format_import", 
+    "py_convert.format_export", 
+    "dateparser.data.date_translation_data"
+    ]
+
 [tool.tbump]
 github_url = "https://github.com/Atem83/ConvertEcritures"
 
 [tool.tbump.version]
 current = "1.1.0"
-
-# Example of a semver regexp.
-# Make sure this matches current_version before
-# using tbump
 regex = '''
   (?P<major>\d+)
   \.
@@ -22,12 +71,6 @@ regex = '''
 [tool.tbump.git]
 message_template = "Bump to {new_version}"
 tag_template = "v{new_version}"
-
-# For each file to patch, add a [[tool.tbump.file]] config
-# section containing the path of the file, relative to the
-# tbump.toml location.
-[[tool.tbump.file]]
-src = "setup.cfg"
 
 [[tool.tbump.file]]
 src = "py_convert/__about__.py"

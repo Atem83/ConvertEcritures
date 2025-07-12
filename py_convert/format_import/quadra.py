@@ -16,7 +16,7 @@ class ImportQuadra(ImportBase):
         liste_ecritures = []
         liste_libelles = []
 
-        with open(self.path, "r") as file:
+        with open(self.path, "r", encoding='ISO-8859-1') as file:
             lignes = file.readlines()
 
             # Test si le fichier est bien un fichier format ASCII Quadra

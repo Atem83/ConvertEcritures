@@ -1,0 +1,8 @@
+polars
+PySide6
+dateparser
+openpyxl
+xlsxwriter
+fastexcel
+screeninfo
+send2trash

@@ -5,7 +5,11 @@ class AskCash(QtWidgets.QDialog):
     def __init__(self, myframe):
         super().__init__()
         self.myframe = myframe
-        self.setGeometry(100, 100, 310, 160)
+        self.setGeometry(
+            self.myframe.app.x(),
+            self.myframe.app.y(), 
+            310, 
+            160)
         self.setWindowTitle("Paramétrage des comptes")
 
         texte_530 = "Numéro du compte de caisse :"

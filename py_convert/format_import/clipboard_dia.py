@@ -2,8 +2,8 @@ import polars as pl
 
 from py_convert.format_import import ImportBase
 
-class ImportCBCador(ImportBase):
-    """Gestion d'import d'écritures du presse-papier au format CADOR."""
+class ImportClipboardDia(ImportBase):
+    """Gestion d'import d'écritures du presse-papier au format DiaCompta."""
     
     def name(self):
         return "PRESSE-PAPIER"

@@ -77,6 +77,14 @@ class ImportUberEats(ImportBase):
             except:
                 df = df.with_columns(pl.col(col).str.strptime(pl.Date, "%d/%m/%Y").cast(dtype))
         
+        # Ajout d'une date de versement pour les lignes sans date de versement
+        df = df.with_columns(
+            pl.when(pl.col("DATE VIREMENT").is_null())
+            .then(pl.col("DATE VIREMENT").forward_fill() + pl.duration(days=1))
+            .otherwise(pl.col("DATE VIREMENT"))
+            .alias("DATE VIREMENT")
+        )
+        
         # Agrégation des valeurs par date de commande puis par ID
         df = df.group_by(["DATE COMMANDE", "ID"]).agg([
             pl.col("DATE VIREMENT").first().alias("DATE VIREMENT"),

@@ -7,7 +7,6 @@
   [![PyPI](https://img.shields.io/pypi/v/ConvertEcritures?style=flat)](https://pypi.org/project/ConvertEcritures)
   <a href="https://opensource.org/license/mit">![License](https://img.shields.io/badge/License-MIT-blue)</a>
   <a href="https://github.com/Atem83/ConvertEcritures/archive/refs/heads/main.zip">![Download](https://img.shields.io/badge/Source_Code-Download-blue)</a>
-  ![LOC](https://tokei.rs/b1/github/Atem83/ConvertEcritures?category=lines)
   
 </div>
 
@@ -20,27 +19,29 @@
 
 <h2 align="center"> Formats d'import </h2>
 
-**FEC** : format .txt et les deux séparateurs sont reconnus
+**FEC** : format .txt et les deux séparateurs sont reconnus.
 
-**QUADRA** : format ASCII sans extension
+**QUADRA** : format ASCII sans extension.
 
-**SAGE 20** : format .txt
+**SAGE 20** : format .txt.
 
-**PRESSE-PAPIER** : pas de fichier d'import, récupère le contenu du presse-papier qui doit au format du logiciel comptable ComptabiliteExpert (éditeur ACD)
+**PRESSE-PAPIER** : pas de fichier d'import, récupère le contenu du presse-papier qui doit être au format du logiciel comptable DiaCompta.
 
-**SEKUR** : journal des ventes au format .xlsx du logiciel de vente SEKUR
+**SEKUR** : journal des ventes au format .xlsx du logiciel de vente SEKUR.
 
-**VOSFACTURES** : fichier au format .xls du logiciel de vente vosfactures.fr
+**VOSFACTURES** : fichier au format .xls du logiciel de vente vosfactures.fr.
+
+**UBER EATS** : rapport "Informations de paiement" éditable au format .csv sur la plateforme des restaurateurs Uber Eats permettant de le transformer en écriture comptable exploitable.
 
 <h2 align="center"> Formats d'export </h2>
 
-**FEC** : format .txt avec séparateur tabulation
+**FEC** : format .txt avec séparateur tabulation.
 
-**EXCEL** : format .xlsx
+**EXCEL** : format .xlsx.
 
-**PRESSE-PAPIER** : pas de fichier d'export, exporte les écritures dans le presse-papier au format reconnu par le logiciel comptable ComptabiliteExpert (éditeur ACD)
+**PRESSE-PAPIER** : pas de fichier d'export, exporte les écritures dans le presse-papier au format du logiciel DiaCompta.
 
-**TRS** : format .TRS
+**TRS** : format .TRS.
 
 <h2 align="center"> Paramètres </h2>
 

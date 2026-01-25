@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.2.0] - 2026-01-14
 - Ajout du format d'import Uber Eats
 - Renommage des fichiers clipboard_cador en clipboard_dia
+- Modification de la position de la fenêtre de paramètre caisse
 
 ## [1.1.2] - 2025-07-06
 - Adaptation du programme pour le rendre compatible avec le compilateur cx_freeze

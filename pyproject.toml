@@ -61,6 +61,7 @@ packages = [
 github_url = "https://github.com/Atem83/ConvertEcritures"
 
 [tool.tbump.version]
+current = "1.1.2"
 regex = '''
   (?P<major>\d+)
   \.

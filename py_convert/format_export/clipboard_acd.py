@@ -4,8 +4,8 @@ from PySide6.QtWidgets import QMessageBox
 
 from py_convert.format_export import ExportBase
 
-class ExportClipboardDia(ExportBase):
-    """Gestion d'export au format presse-papier de DiaCompta."""
+class ExportClipboardACD(ExportBase):
+    """Gestion d'export au format presse-papier d'ACD Compta."""
     def name(self):
         return "PRESSE-PAPIER"
     

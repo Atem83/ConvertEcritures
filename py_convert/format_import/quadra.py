@@ -16,13 +16,13 @@ class ImportQuadra(ImportBase):
         liste_ecritures = []
         liste_libelles = []
 
-        with open(self.path, "r", encoding='ISO-8859-1') as file:
+        with open(self.path, "r", encoding="ISO-8859-1") as file:
             lignes = file.readlines()
 
             # Test si le fichier est bien un fichier format ASCII Quadra
-            if lignes[0].startswith(('M', 'C')):
+            if lignes[0].startswith(("M", "C")):
                 pass
-            elif lignes[-2].startswith(('M', 'C')):
+            elif lignes[-2].startswith(("M", "C")):
                 pass
             else:
                 run_error("Fichier incorrect ou endommagé")
@@ -31,9 +31,9 @@ class ImportQuadra(ImportBase):
             # Récupération des lignes d'écritures
             for ligne in lignes[0:]:
                 # Enregistre les libellés de compte
-                if ligne.startswith('C'):
+                if ligne.startswith("C"):
                     libelle = {
-                        "CompteNum": ligne[1:9].rstrip().rstrip('_'),
+                        "CompteNum": ligne[1:9].rstrip().rstrip("_"),
                         "CompteLib": ligne[9:39].rstrip()
                     }
 
@@ -41,20 +41,20 @@ class ImportQuadra(ImportBase):
                     liste_libelles.append(libelle)
 
                 # Enregistre les écritures comptables
-                if ligne.startswith('M'):
+                if ligne.startswith("M"):
                     # Récupère les montants débits et crédits
-                    if ligne[41] == 'D':
-                        if ligne[42] == '+':
+                    if ligne[41] == "D":
+                        if ligne[42] == "+":
                             debit = int(ligne[43:55]) / 100
                             credit = 0.00
-                        elif ligne[42] == '-':
+                        elif ligne[42] == "-":
                             debit = -int(ligne[43:55]) / 100
                             credit = 0.00
-                    elif ligne[41] == 'C':
-                        if ligne[42] == '+':
+                    elif ligne[41] == "C":
+                        if ligne[42] == "+":
                             credit = int(ligne[43:55]) / 100
                             debit = 0.00
-                        elif ligne[42] == '-':
+                        elif ligne[42] == "-":
                             credit = -int(ligne[43:55]) / 100
                             debit = 0.00
                     else:
@@ -62,7 +62,7 @@ class ImportQuadra(ImportBase):
                         credit = 0.00
 
                     # Récupération du numéro de compte
-                    compte = ligne[1:9].rstrip().rstrip('_')
+                    compte = ligne[1:9].rstrip().rstrip("_")
                     if compte.startswith(("401", "08")):
                         compteGen = "40100000"
                         compteAux = compte
@@ -75,6 +75,8 @@ class ImportQuadra(ImportBase):
 
                     # Récupération du numéro de pièce
                     numPiece = ligne[99:107].rstrip()
+                    if numPiece == "": # emplacement alternatif
+                        numPiece = ligne[148:158].rstrip()
                     if numPiece == "":
                         numPiece = None
 

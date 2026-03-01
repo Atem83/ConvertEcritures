@@ -25,6 +25,8 @@
 
 **SAGE 20** : format .txt.
 
+**EBP** : format .txt.
+
 **PRESSE-PAPIER** : pas de fichier d'import, récupère le contenu du presse-papier qui doit être au format du logiciel comptable DiaCompta.
 
 **SEKUR** : journal des ventes au format .xlsx du logiciel de vente SEKUR.

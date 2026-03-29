@@ -35,6 +35,8 @@
 
 **UBER EATS** : rapport "Informations de paiement" éditable au format .csv sur la plateforme des restaurateurs Uber Eats permettant de le transformer en écriture comptable exploitable.
 
+**JDC** : journal de caisse au format .csv du logiciel de caisse JDC.
+
 <h2 align="center"> Formats d'export </h2>
 
 **FEC** : format .txt avec séparateur tabulation.

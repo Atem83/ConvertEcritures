@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.4.0] - 2026-03-29
 - Ajout du format d'import de la caisse JDC
+- Ajout du format d'import AIRBNB
 
 ## [1.3.0] - 2026-03-02
 - Ajout du format d'import EBP

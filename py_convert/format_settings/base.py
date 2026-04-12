@@ -94,7 +94,7 @@ class SettingsBase(ABC):
             filtre_val = filter[filtre_col]
             df = df.with_columns(
                 pl.when(
-                    pl.col(filtre_col) == filtre_val,
+                    pl.col(filtre_col).str.contains(filtre_val),
                     pl.col(col).str.starts_with(old_str)
                 )
                 .then(pl.lit(new_str))

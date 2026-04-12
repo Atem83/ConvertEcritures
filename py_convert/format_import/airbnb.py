@@ -3,7 +3,7 @@ import polars as pl
 from py_convert.error import run_error
 from py_convert.format_import import ImportBase
 
-class ImportUberEats(ImportBase):
+class ImportAIRBNB(ImportBase):
     """Gestion d'import d'un fichier CSV au format rapport de AIRBNB."""
     
     def name(self):

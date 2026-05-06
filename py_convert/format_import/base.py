@@ -160,3 +160,14 @@ class ImportBase(ABC):
         df = df.drop(["solde", "reset", "shifted_reset"])
 
         return df
+
+    def detect_eol(self):
+        with open(self.path, "rb") as f:
+            content = f.read(1024)  # lire premiers 1024 bytes
+
+        if b"\r\n" in content:
+            return "\r\n"  # Windows
+        elif b"\r" in content:
+            return "\r"  # Macintosh
+        else:
+            return "\n"  # Unix/Linux

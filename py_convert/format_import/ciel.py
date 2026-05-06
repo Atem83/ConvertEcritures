@@ -65,6 +65,24 @@ class ImportCiel(ImportBase):
         df = df.drop(("PieceRef", "PostalCode", "PieceRef3"))
         df = df.rename({"PieceRef2": "PieceRef"})
         
+        # Ajout de la séparation compte général et auxiliaire
+        df = df.with_columns(
+            pl.when(pl.col("CompteNum").str.contains(r"^(F|C|401|411)"))
+            .then(pl.col("CompteNum"))
+            .otherwise(None)
+            .alias("CompAuxNum")
+        ).with_columns(
+            pl.when(pl.col("CompAuxNum").str.contains(r"^(F|401)"))
+            .then(pl.lit("40100000"))
+            .otherwise(pl.col("CompteNum"))
+            .alias("CompteNum")
+        ).with_columns(
+            pl.when(pl.col("CompAuxNum").str.contains(r"^(C|411)"))
+            .then(pl.lit("41100000"))
+            .otherwise(pl.col("CompteNum"))
+            .alias("CompteNum")
+        )
+        
         # Transforme les colonnes en type Date
         df = df.with_columns(pl.col("EcritureDate").str.to_date("%d/%m/%Y"))
 

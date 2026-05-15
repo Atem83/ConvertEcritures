@@ -61,6 +61,12 @@ class ImportCiel(ImportBase):
                     eol_char=self.detect_eol()
                     )
         
+        # Suppression des écritures CB car les cartes bleues sont les CBM
+        df = df.filter(pl.col("PieceRef3") != "CB")
+        
+        # Suppression des espaces dans le numéro de compte
+        df = df.with_columns(pl.col("CompteNum").str.replace_all(" ", ""))
+        
         # Conservation des colonnes utiles
         df = df.drop(("PieceRef", "PostalCode", "PieceRef3"))
         df = df.rename({"PieceRef2": "PieceRef"})

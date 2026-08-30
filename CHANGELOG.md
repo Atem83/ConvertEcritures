@@ -7,13 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.4.0] - 2026-03-29
 - Ajout du format d'import de la caisse JDC
 - Ajout du format d'import AIRBNB
+- Ajout du format d'import BOOKING.COM
+- Ajout du format d'import PLANITY
+- Ajout du format d'import CIEL
+- Ajout du format d'import CB INTERNET DEKRA
+- Mise à jour format UBER EATS
+- Correction d'un bug qui empêchait l'utilisation des filtres de dates si une seule d'entre elle était utilisée
 
 ## [1.3.0] - 2026-03-02
 - Ajout du format d'import EBP
 - Suppression du tooltip de la fenêtre d'import
 
 ## [1.2.0] - 2026-01-25
-- Ajout du format d'import Uber Eats
+- Ajout du format d'import UBER EATS
 - Renommage des fichiers clipboard_cador en clipboard_dia
 - Modification de la position de la fenêtre de paramètre caisse
 

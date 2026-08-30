@@ -227,19 +227,27 @@ class MyFrame(QtWidgets.QFrame):
                     df = settings.entries
                     break
 
-            # Filtre le dataframe en fonction de la date
+            # Filtre le dataframe en fonction de la date de début
             pattern = re.compile(r"^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$")
-            if pattern.match(start_date) and pattern.match(end_date):
+
+            if pattern.match(start_date):
                 start = pl.lit(start_date).str.strptime(pl.Date, format="%d/%m/%Y")
-                end = pl.lit(end_date).str.strptime(pl.Date, format="%d/%m/%Y")
-                df = df.filter(
-                    (pl.col("EcritureDate") >= start) &
-                    (pl.col("EcritureDate") <= end)
-                    )
-            elif start_date == "" and end_date == "":
+                df = df.filter(pl.col("EcritureDate") >= start)
+            elif start_date == "":
                 pass
             else:
-                message = "Les dates doivent être au format JJ/MM/AAAA !"
+                message = "La date de début doit être au format JJ/MM/AAAA !"
+                QtWidgets.QMessageBox.warning(self, "Attention", message)
+                return
+
+            # Filtre le dataframe en fonction de la date de fin
+            if pattern.match(end_date):
+                end = pl.lit(end_date).str.strptime(pl.Date, format="%d/%m/%Y")
+                df = df.filter(pl.col("EcritureDate") <= end)
+            elif end_date == "":
+                pass
+            else:
+                message = "La date de fin doit être au format JJ/MM/AAAA !"
                 QtWidgets.QMessageBox.warning(self, "Attention", message)
                 return
 

@@ -26,7 +26,8 @@ class ImportCiel(ImportBase):
             "Debit": pl.Float64,
             "Credit": pl.Float64,
             "PostalCode": pl.String,
-            "PieceRef3": pl.String
+            "PieceRef3": pl.String,
+            "PieceRef4": pl.String,
         }
         
         # Permet de changer l'encodage si un problème d'import survient
@@ -68,7 +69,7 @@ class ImportCiel(ImportBase):
         df = df.with_columns(pl.col("CompteNum").str.replace_all(" ", ""))
         
         # Conservation des colonnes utiles
-        df = df.drop(("PieceRef", "PostalCode", "PieceRef3"))
+        df = df.drop(("PieceRef", "PostalCode", "PieceRef3", "PieceRef4"))
         df = df.rename({"PieceRef2": "PieceRef"})
         
         # Ajout de la séparation compte général et auxiliaire

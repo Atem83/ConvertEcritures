@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Ajout du format d'import CB INTERNET DEKRA
 - Mise à jour format UBER EATS
 - Correction d'un bug qui empêchait l'utilisation des filtres de dates si une seule d'entre elle était utilisée
+- Correction d'un bug dans l'import Ciel à cause d'une colonne supplémentaire
 
 ## [1.3.0] - 2026-03-02
 - Ajout du format d'import EBP

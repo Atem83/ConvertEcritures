@@ -45,6 +45,7 @@ class ImportUberEats(ImportBase):
             "Remboursements (TVA comprise)": "ERREURS COMMANDE",
             "Remboursements (TVA incluse)": "ERREURS COMMANDE",
             "Order Error Adjustments (incl. VAT)": "ERREURS COMMANDE",
+            "Montant de la facturation rétroactive (TVA incluse)": "ERREURS COMMANDE",
             "Frais de mise en marché après rabais (TVA en sus)": "FRAIS UBER HT",
             "Frais de service de la Marketplace / frais de mise en relation après promotion (hors TVA)": "FRAIS UBER HT",
             "TVA sur les frais de mise en marché après rabais ": "FRAIS UBER TVA",

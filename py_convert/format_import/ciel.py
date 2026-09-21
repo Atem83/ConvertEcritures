@@ -29,6 +29,12 @@ class ImportCiel(ImportBase):
             "PieceRef3": pl.String,
             "PieceRef4": pl.String,
         }
+
+        # Détection du nombre de colonnes dans le fichier
+        with open(self.path, 'r', encoding='utf-8') as f:
+            first_line = f.readline()
+        num_cols = len(first_line.split('\t'))
+        cols_type = {k: v for k, v in list(cols_type.items())[:num_cols]}
         
         # Permet de changer l'encodage si un problème d'import survient
         try:
@@ -69,7 +75,15 @@ class ImportCiel(ImportBase):
         df = df.with_columns(pl.col("CompteNum").str.replace_all(" ", ""))
         
         # Conservation des colonnes utiles
-        df = df.drop(("PieceRef", "PostalCode", "PieceRef3", "PieceRef4"))
+        df = df.select((
+            "PieceRef2", 
+            "JournalCode", 
+            "EcritureDate", 
+            "CompteNum", 
+            "EcritureLib", 
+            "Debit", 
+            "Credit"
+        ))
         df = df.rename({"PieceRef2": "PieceRef"})
         
         # Ajout de la séparation compte général et auxiliaire

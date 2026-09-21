@@ -29,6 +29,7 @@ class ImportPlanity(ImportBase):
             "Règlements Espèces": pl.Float64,
             "Règlements CB": pl.Float64,
             "Règlements Chèque": pl.Float64,
+            "Pourboires": pl.Float64,
         }
         try:
             df = pl.read_excel(
@@ -60,7 +61,7 @@ class ImportPlanity(ImportBase):
         for row in df.iter_rows(named=True):
             total_HT = 0.0
             
-            # Ligne du compte de prestations TTC
+            # Ligne du compte de prestations HT
             CA_HT = round(row["CA prestations TTC"] / 1.2, 2)
             total_HT += CA_HT
             entries.append({
@@ -73,7 +74,7 @@ class ImportPlanity(ImportBase):
                 "Credit": CA_HT,
             })
             
-            # Ligne du compte de produits TTC
+            # Ligne du compte de produits HT
             CA_HT = round(row["CA produits TTC"] / 1.2, 2)
             total_HT += CA_HT
             entries.append({
@@ -86,7 +87,7 @@ class ImportPlanity(ImportBase):
                 "Credit": CA_HT,
             })
             
-            # Ligne du compte de divers TTC
+            # Ligne du compte de divers HT
             CA_HT = round(row["CA Divers TTC"] / 1.2, 2)
             total_HT += CA_HT
             entries.append({
@@ -116,7 +117,7 @@ class ImportPlanity(ImportBase):
                 "EcritureDate": row["Date"],
                 "CompteNum": "58100000",
                 "PieceDate": row["Date"],
-                "EcritureLib": "Règlements Espèces", 
+                "EcritureLib": "REGLEMENTS ESPECES", 
                 "Debit": row["Règlements Espèces"], 
                 "Credit": 0.0,
             })
@@ -127,7 +128,7 @@ class ImportPlanity(ImportBase):
                 "EcritureDate": row["Date"],
                 "CompteNum": "58200000",
                 "PieceDate": row["Date"],
-                "EcritureLib": "Règlements Chèque", 
+                "EcritureLib": "REGLEMENTS CHEQUES", 
                 "Debit": row["Règlements Chèque"], 
                 "Credit": 0.0,
             })
@@ -138,9 +139,20 @@ class ImportPlanity(ImportBase):
                 "EcritureDate": row["Date"],
                 "CompteNum": "58300000",
                 "PieceDate": row["Date"],
-                "EcritureLib": "Règlements CB", 
+                "EcritureLib": "REGLEMENTS CB", 
                 "Debit": row["Règlements CB"], 
                 "Credit": 0.0,
+            })
+            
+            # Ligne du règlement pourboires
+            entries.append({
+                "JournalCode": "CS",
+                "EcritureDate": row["Date"],
+                "CompteNum": "75800000",
+                "PieceDate": row["Date"],
+                "EcritureLib": "POURBOIRES ENCAISSES", 
+                "Debit": 0.0, 
+                "Credit": row["Pourboires"],
             })
             
         df = pl.DataFrame(entries)

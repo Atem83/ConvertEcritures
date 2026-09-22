@@ -90,7 +90,11 @@ class ImportDekra(ImportBase):
             .otherwise(pl.col("EcritureLib"))
             .alias("EcritureLib")
         ).drop("DATERESA")
-        
+
+        # Suppression des écritures sans numéro de virement
+        df = df.with_columns(pl.col("NUM_VIREMENT").str.strip_chars().replace("", None))
+        df = df.filter(pl.col("NUM_VIREMENT").is_not_null())
+
         # Calcul de la somme des crédits par NUM_VIREMENT
         debit = df.group_by("NUM_VIREMENT").agg(
             pl.col("JournalCode").first(),

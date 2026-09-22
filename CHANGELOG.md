@@ -4,7 +4,12 @@ All notable changes to this project will be documented in this file.
 This format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
-## [1.4.0] - 2026-03-29
+## [1.4.1] - 2026-09-22
+- Suppression des écritures sans numéro de virement dans l'import CB INTERNET DEKRA
+- Rajout colonne pourboires dans l'import planity
+- Modification adaptative du nom de colonnes importées dans un import Ciel
+
+## [1.4.0] - 2026-09-14
 - Ajout du format d'import de la caisse JDC
 - Ajout du format d'import AIRBNB
 - Ajout du format d'import BOOKING.COM

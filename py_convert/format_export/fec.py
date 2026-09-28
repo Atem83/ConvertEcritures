@@ -58,6 +58,9 @@ class ExportFEC(ExportBase):
             df = df.with_columns(pl.col(column).cast(pl.String))
             df = df.with_columns(pl.col(column).str.replace(".", ",", literal=True))
         
+        # S'il manque PieceDate dans les données, copier EcritureDate dans PieceDate (nécessaire pour format FEC)
+        df = df.with_columns(pl.col("PieceDate").fill_null(pl.col("EcritureDate")))
+        
         # Génère mon fichier d'export FEC
         df.write_csv(
             self.path_export, 

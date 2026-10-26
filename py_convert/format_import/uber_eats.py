@@ -42,6 +42,7 @@ class ImportUberEats(ImportBase):
             "Autres paiements (TVA incluse)": "DEPENSES PUB",
             "Bon de réduction-restaurant": "TICKETS RESTO",
             "Titre-restaurant": "TICKETS RESTO",
+            "Montant de la rétrofacturation (TVA comprise)": "ERREURS COMMANDE",
             "Remboursements (TVA comprise)": "ERREURS COMMANDE",
             "Remboursements (TVA incluse)": "ERREURS COMMANDE",
             "Order Error Adjustments (incl. VAT)": "ERREURS COMMANDE",

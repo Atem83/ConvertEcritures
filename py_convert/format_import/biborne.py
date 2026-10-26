@@ -17,13 +17,14 @@ class ImportBiborne(ImportBase):
     
     def process_file(self):
         titles = {
-            "Le Jour": pl.Date,
+            "Le jour": pl.Date,
             "CA HT": pl.Float64,
+            "CA_5_5%_HT": pl.Float64,
+            "CA_10%_HT": pl.Float64,
+            "CA_20%_HT": pl.Float64,
             "TVA 5.5%": pl.Float64,
             "TVA 10%": pl.Float64,
             "TVA 20%": pl.Float64,
-            "Tva 2.1%": pl.Float64,
-            "Total TTC ": pl.Float64,
             "Total Espèce": pl.Float64,
             "Total Twint": pl.Float64,
             "Total Tr": pl.Float64,
@@ -32,7 +33,7 @@ class ImportBiborne(ImportBase):
             "cheque_vacances": pl.Float64,
             "Total Avoir Decaisse": pl.Float64,
             "Promotion": pl.Float64,
-            "TOTAL STRIPE DISHOP": pl.Float64,
+            "Total Dishop": pl.Float64,
             "TOTAL_ESPÈCES_MONNAYEUR": pl.Float64,
         }
         
@@ -54,27 +55,35 @@ class ImportBiborne(ImportBase):
             )
         
         # Suppression des données inutiles
-        df = df.filter(pl.col("Le Jour") != "TOTAL")
+        df = df.filter(pl.col("Le jour") != "TOTAL")
         df = df.with_columns(
             pl.all()
             .str.replace("€", "") # Retirer €
             .str.strip_chars() # Espaces début/fin
         )
-        
+
         # Conversion des types des colonnes
         for col, dtype in titles.items():
             try:
                 df = df.with_columns(pl.col(col).cast(dtype))
             except:
-                df = df.with_columns(pl.col(col).str.strptime(pl.Date, "%Y-%m-%d").cast(dtype))
+                df = df.with_columns(pl.col(col).str.strptime(pl.Date, "%d/%m/%Y").cast(dtype))
+           
+        # Renommage de certaines colonnes
+        df = df.rename({
+            "CA_5_5%_HT": "CA HT 5.5%",
+            "CA_10%_HT": "CA HT 10%",
+            "CA_20%_HT": "CA HT 20%",
+        })
+        
         
         # Calcul des CA HT par taux de TVA
-        df = df.with_columns(
-            (pl.col("TVA 5.5%") / 0.055).alias("CA HT 5.5%"),
-            (pl.col("TVA 10%") / 0.10).alias("CA HT 10%"),
-            (pl.col("TVA 20%") / 0.20).alias("CA HT 20%"),
-            (pl.col("Tva 2.1%") / 0.021).alias("CA HT 2.1%"),
-        )
+        if "CA HT 5.5%" not in df.columns:
+            df = df.with_columns((pl.col("TVA 5.5%") / 0.055).alias("CA HT 5.5%"))
+        if "CA HT 10%" not in df.columns:
+            df = df.with_columns((pl.col("TVA 10%") / 0.10).alias("CA HT 10%"))
+        if "CA HT 20%" not in df.columns:
+            df = df.with_columns((pl.col("TVA 20%") / 0.20).alias("CA HT 20%"))
 
         # Arrondir toutes les colonnes float à 2 décimales
         df = df.with_columns(pl.col(pl.Float64).round(2))
@@ -85,7 +94,6 @@ class ImportBiborne(ImportBase):
              - pl.col("CA HT 5.5%")
              - pl.col("CA HT 10%")
              - pl.col("CA HT 20%")
-             - pl.col("CA HT 2.1%")
              ).round(2).alias("ECART CA HT")
             )
         
@@ -106,11 +114,9 @@ class ImportBiborne(ImportBase):
             (pl.col("CA HT 5.5%")
              + pl.col("CA HT 10%")
              + pl.col("CA HT 20%")
-             + pl.col("CA HT 2.1%")
              + pl.col("TVA 5.5%")
              + pl.col("TVA 10%")
              + pl.col("TVA 20%")
-             + pl.col("Tva 2.1%")
              + pl.col("ECART CA HT")
              - pl.col("Total Espèce")
              - pl.col("Total Twint")
@@ -119,7 +125,7 @@ class ImportBiborne(ImportBase):
              - pl.col("Cach Glory")
              - pl.col("cheque_vacances")
              - pl.col("Total Avoir Decaisse")
-             - pl.col("TOTAL STRIPE DISHOP")
+             - pl.col("Total Dishop")
              - pl.col("TOTAL_ESPÈCES_MONNAYEUR")
              ).round(2).alias("ECART ECRITURE")
             )
@@ -131,9 +137,9 @@ class ImportBiborne(ImportBase):
             # CA HT 5,5%
             entries.append({
             "JournalCode": jrn,
-            "EcritureDate": row["Le Jour"],
+            "EcritureDate": row["Le jour"],
             "CompteNum": "70150000",
-            "PieceDate": row["Le Jour"],
+            "PieceDate": row["Le jour"],
             "EcritureLib": "CA HT 5,5%", 
             "Debit": 0.0, 
             "Credit": row["CA HT 5.5%"],
@@ -142,9 +148,9 @@ class ImportBiborne(ImportBase):
             # TVA 5,5%
             entries.append({
             "JournalCode": jrn,
-            "EcritureDate": row["Le Jour"],
+            "EcritureDate": row["Le jour"],
             "CompteNum": "44571500",
-            "PieceDate": row["Le Jour"],
+            "PieceDate": row["Le jour"],
             "EcritureLib": "TVA COLL 5,5%", 
             "Debit": 0.0, 
             "Credit": row["TVA 5.5%"],
@@ -153,9 +159,9 @@ class ImportBiborne(ImportBase):
             # CA HT 10%
             entries.append({
             "JournalCode": jrn,
-            "EcritureDate": row["Le Jour"],
+            "EcritureDate": row["Le jour"],
             "CompteNum": "70110000",
-            "PieceDate": row["Le Jour"],
+            "PieceDate": row["Le jour"],
             "EcritureLib": "CA HT 10%", 
             "Debit": 0.0, 
             "Credit": row["CA HT 10%"],
@@ -164,9 +170,9 @@ class ImportBiborne(ImportBase):
             # TVA 10%
             entries.append({
             "JournalCode": jrn,
-            "EcritureDate": row["Le Jour"],
+            "EcritureDate": row["Le jour"],
             "CompteNum": "44571100",
-            "PieceDate": row["Le Jour"],
+            "PieceDate": row["Le jour"],
             "EcritureLib": "TVA COLL 10%", 
             "Debit": 0.0, 
             "Credit": row["TVA 10%"],
@@ -175,9 +181,9 @@ class ImportBiborne(ImportBase):
             # CA HT 20%
             entries.append({
             "JournalCode": jrn,
-            "EcritureDate": row["Le Jour"],
+            "EcritureDate": row["Le jour"],
             "CompteNum": "70120000",
-            "PieceDate": row["Le Jour"],
+            "PieceDate": row["Le jour"],
             "EcritureLib": "CA HT 20%", 
             "Debit": 0.0, 
             "Credit": row["CA HT 20%"],
@@ -186,42 +192,20 @@ class ImportBiborne(ImportBase):
             # TVA 20%
             entries.append({
             "JournalCode": jrn,
-            "EcritureDate": row["Le Jour"],
+            "EcritureDate": row["Le jour"],
             "CompteNum": "44571200",
-            "PieceDate": row["Le Jour"],
+            "PieceDate": row["Le jour"],
             "EcritureLib": "TVA COLL 20%", 
             "Debit": 0.0, 
             "Credit": row["TVA 20%"],
             })
             
-            # CA HT 2.1%
-            entries.append({
-            "JournalCode": jrn,
-            "EcritureDate": row["Le Jour"],
-            "CompteNum": "70121000",
-            "PieceDate": row["Le Jour"],
-            "EcritureLib": "CA HT 2.1%", 
-            "Debit": 0.0, 
-            "Credit": row["CA HT 2.1%"],
-            })
-            
-            # TVA 2.1%
-            entries.append({
-            "JournalCode": jrn,
-            "EcritureDate": row["Le Jour"],
-            "CompteNum": "44571210",
-            "PieceDate": row["Le Jour"],
-            "EcritureLib": "TVA COLL 2.1%", 
-            "Debit": 0.0, 
-            "Credit": row["Tva 2.1%"],
-            })
-            
             # Total Espèce
             entries.append({
             "JournalCode": jrn,
-            "EcritureDate": row["Le Jour"],
+            "EcritureDate": row["Le jour"],
             "CompteNum": "53000000",
-            "PieceDate": row["Le Jour"],
+            "PieceDate": row["Le jour"],
             "EcritureLib": "ENC. ESPECES", 
             "Debit": row["Total Espèce"], 
             "Credit": 0.0,
@@ -230,9 +214,9 @@ class ImportBiborne(ImportBase):
             # Total Twint
             entries.append({
             "JournalCode": jrn,
-            "EcritureDate": row["Le Jour"],
+            "EcritureDate": row["Le jour"],
             "CompteNum": "58060000",
-            "PieceDate": row["Le Jour"],
+            "PieceDate": row["Le jour"],
             "EcritureLib": "ENC. TWINT", 
             "Debit": row["Total Twint"], 
             "Credit": 0.0,
@@ -241,9 +225,9 @@ class ImportBiborne(ImportBase):
             # Total Tr
             entries.append({
             "JournalCode": jrn,
-            "EcritureDate": row["Le Jour"],
+            "EcritureDate": row["Le jour"],
             "CompteNum": "58020000",
-            "PieceDate": row["Le Jour"],
+            "PieceDate": row["Le jour"],
             "EcritureLib": "ENC. TR", 
             "Debit": row["Total Tr"], 
             "Credit": 0.0,
@@ -252,9 +236,9 @@ class ImportBiborne(ImportBase):
             # Total CB
             entries.append({
             "JournalCode": jrn,
-            "EcritureDate": row["Le Jour"],
+            "EcritureDate": row["Le jour"],
             "CompteNum": "58010000",
-            "PieceDate": row["Le Jour"],
+            "PieceDate": row["Le jour"],
             "EcritureLib": "ENC. CB", 
             "Debit": row["Total CB"], 
             "Credit": 0.0,
@@ -263,9 +247,9 @@ class ImportBiborne(ImportBase):
             # Cach Glory
             entries.append({
             "JournalCode": jrn,
-            "EcritureDate": row["Le Jour"],
+            "EcritureDate": row["Le jour"],
             "CompteNum": "58070000",
-            "PieceDate": row["Le Jour"],
+            "PieceDate": row["Le jour"],
             "EcritureLib": "ENC. CACH GLORY", 
             "Debit": row["Cach Glory"], 
             "Credit": 0.0,
@@ -274,9 +258,9 @@ class ImportBiborne(ImportBase):
             # cheque_vacances
             entries.append({
             "JournalCode": jrn,
-            "EcritureDate": row["Le Jour"],
+            "EcritureDate": row["Le jour"],
             "CompteNum": "58040000",
-            "PieceDate": row["Le Jour"],
+            "PieceDate": row["Le jour"],
             "EcritureLib": "ENC. CHQ VAC", 
             "Debit": row["cheque_vacances"], 
             "Credit": 0.0,
@@ -285,9 +269,9 @@ class ImportBiborne(ImportBase):
             # Total Avoir Decaisse
             entries.append({
             "JournalCode": jrn,
-            "EcritureDate": row["Le Jour"],
+            "EcritureDate": row["Le jour"],
             "CompteNum": "75800000",
-            "PieceDate": row["Le Jour"],
+            "PieceDate": row["Le jour"],
             "EcritureLib": "AVOIR DECAISSE", 
             "Debit": row["Total Avoir Decaisse"],
             "Credit": 0.0, 
@@ -296,20 +280,20 @@ class ImportBiborne(ImportBase):
             # TOTAL STRIPE DISHOP
             entries.append({
             "JournalCode": jrn,
-            "EcritureDate": row["Le Jour"],
+            "EcritureDate": row["Le jour"],
             "CompteNum": "58050000",
-            "PieceDate": row["Le Jour"],
+            "PieceDate": row["Le jour"],
             "EcritureLib": "ENC. STRIPE", 
-            "Debit": row["TOTAL STRIPE DISHOP"], 
+            "Debit": row["Total Dishop"], 
             "Credit": 0.0,
             })
             
             # TOTAL_ESPÈCES_MONNAYEUR
             entries.append({
             "JournalCode": jrn,
-            "EcritureDate": row["Le Jour"],
+            "EcritureDate": row["Le jour"],
             "CompteNum": "53000000",
-            "PieceDate": row["Le Jour"],
+            "PieceDate": row["Le jour"],
             "EcritureLib": "ENC. ESPÈCES MONNAYEUR", 
             "Debit": row["TOTAL_ESPÈCES_MONNAYEUR"], 
             "Credit": 0.0,
@@ -318,9 +302,9 @@ class ImportBiborne(ImportBase):
             # ECART CA HT
             entries.append({
             "JournalCode": jrn,
-            "EcritureDate": row["Le Jour"],
+            "EcritureDate": row["Le jour"],
             "CompteNum": "47100000",
-            "PieceDate": row["Le Jour"],
+            "PieceDate": row["Le jour"],
             "EcritureLib": "ECART CA HT", 
             "Debit": 0.0, 
             "Credit": row["ECART CA HT"],
@@ -329,9 +313,9 @@ class ImportBiborne(ImportBase):
             # ECART ECRITURE
             entries.append({
             "JournalCode": jrn,
-            "EcritureDate": row["Le Jour"],
+            "EcritureDate": row["Le jour"],
             "CompteNum": "65800000",
-            "PieceDate": row["Le Jour"],
+            "PieceDate": row["Le jour"],
             "EcritureLib": "ECART ECRITURE", 
             "Debit": row["ECART ECRITURE"], 
             "Credit": 0.0,
@@ -340,18 +324,18 @@ class ImportBiborne(ImportBase):
         # Ajout de l'écriture concernant les promotions
         entries.append({
             "JournalCode": "OD",
-            "EcritureDate": df[-1, "Le Jour"],
+            "EcritureDate": df[-1, "Le jour"],
             "CompteNum": "62340000",
-            "PieceDate": df[-1, "Le Jour"],
+            "PieceDate": df[-1, "Le jour"],
             "EcritureLib": "PROMOTIONS", 
             "Debit": df["Promotion"].sum(), 
             "Credit": 0.0,
         })
         entries.append({
             "JournalCode": "OD",
-            "EcritureDate": df[-1, "Le Jour"],
+            "EcritureDate": df[-1, "Le jour"],
             "CompteNum": "60150000",
-            "PieceDate": df[-1, "Le Jour"],
+            "PieceDate": df[-1, "Le jour"],
             "EcritureLib": "PROMOTIONS", 
             "Debit": 0.0, 
             "Credit": df["Promotion"].sum(),
